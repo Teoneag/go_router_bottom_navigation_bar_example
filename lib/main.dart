@@ -1,11 +1,8 @@
-// lib/routes.dart
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-// import 'package:go_router_builder/go_router_builder.dart';
 
-part 'main.g.dart'; // This line is crucial for code generation
+part 'main.g.dart';
 
-// lib/main.dart
 void main() {
   runApp(const MyApp());
 }
@@ -13,9 +10,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // Create a global key for the root navigator.
-  // This is optional but good practice for scenarios like
-  // showing dialogs over the entire app.
   static final GlobalKey<NavigatorState> _rootNavigatorKey =
       GlobalKey<NavigatorState>();
 
@@ -23,20 +17,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: GoRouter(
-        // Use the generated routes
         routes: $appRoutes,
-        // The initial location when the app starts
         initialLocation: '/home',
-        // Optional: Add a root navigator key
         navigatorKey: _rootNavigatorKey,
-        debugLogDiagnostics: true, // Good for debugging navigation
+        debugLogDiagnostics: true,
       ),
       title: 'GoRouter Type-Safe Bottom Nav Example',
     );
   }
 }
 
-// --- Main Shell Route for Bottom Navigation Bar ---
 @TypedStatefulShellRoute<AppShellRoute>(
   branches: <TypedStatefulShellBranch>[
     TypedStatefulShellBranch<HomeBranch>(
@@ -82,7 +72,6 @@ class AppShellRoute extends StatefulShellRouteData {
   }
 }
 
-// --- Home Tab Routes ---
 class HomeBranch extends StatefulShellBranchData {
   const HomeBranch();
 }
@@ -103,7 +92,6 @@ class HomeDetailRoute extends GoRouteData {
       HomeDetailScreen(id: id);
 }
 
-// --- Settings Tab Routes ---
 class SettingsBranch extends StatefulShellBranchData {
   const SettingsBranch();
 }
@@ -124,7 +112,6 @@ class SettingsAboutRoute extends GoRouteData {
       const SettingsAboutScreen();
 }
 
-// --- Profile Tab Routes ---
 class ProfileBranch extends StatefulShellBranchData {
   const ProfileBranch();
 }
@@ -145,7 +132,6 @@ class ProfileEditRoute extends GoRouteData {
       const ProfileEditScreen();
 }
 
-// --- Screens (Simplified for example) ---
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -258,7 +244,6 @@ class ProfileEditScreen extends StatelessWidget {
   }
 }
 
-// --- Scaffold with Bottom Navigation Bar ---
 class ScaffoldWithNavBar extends StatelessWidget {
   const ScaffoldWithNavBar({required this.navigationShell, Key? key})
     : super(key: key ?? const ValueKey('ScaffoldWithNavBar'));
@@ -280,8 +265,6 @@ class ScaffoldWithNavBar extends StatelessWidget {
         ],
         currentIndex: navigationShell.currentIndex,
         onTap: (int index) {
-          // Use `goBranch` to navigate to the selected branch,
-          // preserving the navigation stack of the target branch.
           navigationShell.goBranch(
             index,
             initialLocation: index == navigationShell.currentIndex,
