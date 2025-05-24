@@ -9,21 +9,9 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  static final GlobalKey<NavigatorState> _rootNavigatorKey =
-      GlobalKey<NavigatorState>();
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: GoRouter(
-        routes: $appRoutes,
-        initialLocation: '/home',
-        navigatorKey: _rootNavigatorKey,
-        debugLogDiagnostics: true,
-      ),
-      title: 'GoRouter Type-Safe Bottom Nav Example',
-    );
+    return MaterialApp.router(routerConfig: GoRouter(routes: $appRoutes));
   }
 }
 
@@ -32,9 +20,10 @@ class MyApp extends StatelessWidget {
     TypedStatefulShellBranch<HomeBranch>(
       routes: <TypedGoRoute>[
         TypedGoRoute<HomeRoute>(
-          path: '/home',
+          path: '/',
           routes: <TypedGoRoute>[
-            TypedGoRoute<HomeDetailRoute>(path: 'details/:id'),
+            //! DO NOT PUT / in the beginning of the path as the path won't be found
+            TypedGoRoute<HomeDetailRoute>(path: 'details'),
           ],
         ),
       ],
@@ -44,16 +33,8 @@ class MyApp extends StatelessWidget {
         TypedGoRoute<SettingsRoute>(
           path: '/settings',
           routes: <TypedGoRoute>[
-            TypedGoRoute<SettingsAboutRoute>(path: 'about'),
+            TypedGoRoute<SettingsDetailsRoute>(path: 'details'),
           ],
-        ),
-      ],
-    ),
-    TypedStatefulShellBranch<ProfileBranch>(
-      routes: <TypedGoRoute>[
-        TypedGoRoute<ProfileRoute>(
-          path: '/profile',
-          routes: <TypedGoRoute>[TypedGoRoute<ProfileEditRoute>(path: 'edit')],
         ),
       ],
     ),
@@ -84,12 +65,11 @@ class HomeRoute extends GoRouteData {
 }
 
 class HomeDetailRoute extends GoRouteData {
-  const HomeDetailRoute({required this.id});
-  final String id;
+  const HomeDetailRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      HomeDetailScreen(id: id);
+      DetailsScreen(title: 'Home Detail');
 }
 
 class SettingsBranch extends StatefulShellBranchData {
@@ -104,32 +84,12 @@ class SettingsRoute extends GoRouteData {
       const SettingsScreen();
 }
 
-class SettingsAboutRoute extends GoRouteData {
-  const SettingsAboutRoute();
+class SettingsDetailsRoute extends GoRouteData {
+  const SettingsDetailsRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const SettingsAboutScreen();
-}
-
-class ProfileBranch extends StatefulShellBranchData {
-  const ProfileBranch();
-}
-
-class ProfileRoute extends GoRouteData {
-  const ProfileRoute();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      const ProfileScreen();
-}
-
-class ProfileEditRoute extends GoRouteData {
-  const ProfileEditRoute();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      const ProfileEditScreen();
+      const DetailsScreen(title: 'settings details');
 }
 
 class HomeScreen extends StatelessWidget {
@@ -143,10 +103,9 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Welcome to Home!'),
             ElevatedButton(
               onPressed: () {
-                HomeDetailRoute(id: '123').go(context);
+                HomeDetailRoute().go(context);
               },
               child: const Text('Go to Home Detail'),
             ),
@@ -157,15 +116,15 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class HomeDetailScreen extends StatelessWidget {
-  const HomeDetailScreen({super.key, required this.id});
-  final String id;
+class DetailsScreen extends StatelessWidget {
+  final String title;
+  const DetailsScreen({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home Detail')),
-      body: Center(child: Text('This is Home Detail screen with ID: $id')),
+      appBar: AppBar(title: Text(title)),
+      body: Center(child: Text('Details for $title')),
     );
   }
 }
@@ -181,10 +140,9 @@ class SettingsScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Settings Page'),
             ElevatedButton(
               onPressed: () {
-                SettingsAboutRoute().go(context);
+                SettingsDetailsRoute().go(context);
               },
               child: const Text('Go to About'),
             ),
@@ -195,58 +153,8 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
-class SettingsAboutScreen extends StatelessWidget {
-  const SettingsAboutScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('About')),
-      body: const Center(child: Text('This is the About screen.')),
-    );
-  }
-}
-
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Profile Page'),
-            ElevatedButton(
-              onPressed: () {
-                ProfileEditRoute().go(context);
-              },
-              child: const Text('Edit Profile'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ProfileEditScreen extends StatelessWidget {
-  const ProfileEditScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Edit Profile')),
-      body: const Center(child: Text('This is the Edit Profile screen.')),
-    );
-  }
-}
-
 class ScaffoldWithNavBar extends StatelessWidget {
-  const ScaffoldWithNavBar({required this.navigationShell, Key? key})
-    : super(key: key ?? const ValueKey('ScaffoldWithNavBar'));
+  const ScaffoldWithNavBar({required this.navigationShell, super.key});
 
   final StatefulNavigationShell navigationShell;
 
@@ -261,7 +169,6 @@ class ScaffoldWithNavBar extends StatelessWidget {
             icon: Icon(Icons.settings),
             label: 'Settings',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
         currentIndex: navigationShell.currentIndex,
         onTap: (int index) {
