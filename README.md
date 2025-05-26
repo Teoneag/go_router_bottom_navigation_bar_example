@@ -1,16 +1,10 @@
-# go_router_bottom_navigation_bar_example
+## Getting started
 
-A new Flutter project.
+1. Add `android:enableOnBackInvokedCallback="true"` to AndroidManifest.xml
 
-## Getting Started
+This fixes
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+W/WindowOnBackDispatcher( 2369): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 2369): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+```
