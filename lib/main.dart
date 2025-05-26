@@ -4,14 +4,30 @@ import 'package:go_router/go_router.dart';
 part 'main.g.dart';
 
 void main() {
+  // TODO
+  // ignore: depend_on_referenced_packages
+  // import 'package:flutter_web_plugins/url_strategy.dart';
+  // usePathUrlStrategy(); // DO NOT use on static servers without proper rewrites
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+// Must be a final var outside widgets to avoid navigating home on hot reload
+final goRouter = GoRouter(
+  routes: $appRoutes,
+  debugLogDiagnostics: true, // To see all the routes
+);
+
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(routerConfig: GoRouter(routes: $appRoutes));
+    return MaterialApp.router(routerConfig: goRouter);
   }
 }
 
@@ -89,7 +105,7 @@ class SettingsDetailsRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const DetailsScreen(title: 'settings details');
+      const DetailsScreen(title: 'Settings Details');
 }
 
 class HomeScreen extends StatelessWidget {
@@ -107,7 +123,7 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 HomeDetailRoute().go(context);
               },
-              child: const Text('Go to Home Detail'),
+              child: const Text('Go to Home Details'),
             ),
           ],
         ),
@@ -144,7 +160,7 @@ class SettingsScreen extends StatelessWidget {
               onPressed: () {
                 SettingsDetailsRoute().go(context);
               },
-              child: const Text('Go to About'),
+              child: const Text('Go to Settings Details'),
             ),
           ],
         ),
