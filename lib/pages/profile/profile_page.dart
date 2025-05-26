@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:go_router_bottom_navigation_bar_example/routes.dart';
+import '../../routes.dart';
 
 import 'profile_details_screen.dart';
 
