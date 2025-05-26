@@ -16,12 +16,12 @@ RouteBase get $appShellRoute => StatefulShellRouteData.$route(
         GoRouteData.$route(
           path: '/',
 
-          factory: $HomeRouteExtension._fromState,
+          factory: $FeedRouteExtension._fromState,
           routes: [
             GoRouteData.$route(
               path: 'details',
 
-              factory: $HomeDetailRouteExtension._fromState,
+              factory: $FeedDetailRouteExtension._fromState,
             ),
           ],
         ),
@@ -30,14 +30,14 @@ RouteBase get $appShellRoute => StatefulShellRouteData.$route(
     StatefulShellBranchData.$branch(
       routes: [
         GoRouteData.$route(
-          path: '/settings',
+          path: '/profile',
 
-          factory: $SettingsRouteExtension._fromState,
+          factory: $ProfileRouteExtension._fromState,
           routes: [
             GoRouteData.$route(
               path: 'details',
 
-              factory: $SettingsDetailsRouteExtension._fromState,
+              factory: $ProfileDetailsRouteExtension._fromState,
             ),
           ],
         ),
@@ -50,8 +50,8 @@ extension $AppShellRouteExtension on AppShellRoute {
   static AppShellRoute _fromState(GoRouterState state) => const AppShellRoute();
 }
 
-extension $HomeRouteExtension on HomeRoute {
-  static HomeRoute _fromState(GoRouterState state) => const HomeRoute();
+extension $FeedRouteExtension on FeedRoute {
+  static FeedRoute _fromState(GoRouterState state) => const FeedRoute();
 
   String get location => GoRouteData.$location('/');
 
@@ -65,9 +65,9 @@ extension $HomeRouteExtension on HomeRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $HomeDetailRouteExtension on HomeDetailRoute {
-  static HomeDetailRoute _fromState(GoRouterState state) =>
-      const HomeDetailRoute();
+extension $FeedDetailRouteExtension on FeedDetailRoute {
+  static FeedDetailRoute _fromState(GoRouterState state) =>
+      const FeedDetailRoute();
 
   String get location => GoRouteData.$location('/details');
 
@@ -81,10 +81,10 @@ extension $HomeDetailRouteExtension on HomeDetailRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $SettingsRouteExtension on SettingsRoute {
-  static SettingsRoute _fromState(GoRouterState state) => const SettingsRoute();
+extension $ProfileRouteExtension on ProfileRoute {
+  static ProfileRoute _fromState(GoRouterState state) => const ProfileRoute();
 
-  String get location => GoRouteData.$location('/settings');
+  String get location => GoRouteData.$location('/profile');
 
   void go(BuildContext context) => context.go(location);
 
@@ -96,11 +96,11 @@ extension $SettingsRouteExtension on SettingsRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $SettingsDetailsRouteExtension on SettingsDetailsRoute {
-  static SettingsDetailsRoute _fromState(GoRouterState state) =>
-      const SettingsDetailsRoute();
+extension $ProfileDetailsRouteExtension on ProfileDetailsRoute {
+  static ProfileDetailsRoute _fromState(GoRouterState state) =>
+      const ProfileDetailsRoute();
 
-  String get location => GoRouteData.$location('/settings/details');
+  String get location => GoRouteData.$location('/profile/details');
 
   void go(BuildContext context) => context.go(location);
 

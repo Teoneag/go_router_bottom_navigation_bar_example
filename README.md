@@ -8,3 +8,9 @@ This fixes
 W/WindowOnBackDispatcher( 2369): OnBackInvokedCallback is not enabled for the application.
 W/WindowOnBackDispatcher( 2369): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
 ```
+
+2. Run
+
+```bash
+dart run build_runner watch
+```

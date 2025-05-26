@@ -8,7 +8,7 @@ void main() {
   // ignore: depend_on_referenced_packages
   // import 'package:flutter_web_plugins/url_strategy.dart';
   // usePathUrlStrategy(); // DO NOT use on static servers without proper rewrites
-  runApp(const MyApp());
+  runApp(MaterialApp.router(routerConfig: goRouter));
 }
 
 // Must be a final var outside widgets to avoid navigating home on hot reload
@@ -17,39 +17,25 @@ final goRouter = GoRouter(
   debugLogDiagnostics: true, // To see all the routes
 );
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(routerConfig: goRouter);
-  }
-}
-
 @TypedStatefulShellRoute<AppShellRoute>(
   branches: <TypedStatefulShellBranch>[
-    TypedStatefulShellBranch<HomeBranch>(
+    TypedStatefulShellBranch<FeedBranch>(
       routes: <TypedGoRoute>[
-        TypedGoRoute<HomeRoute>(
+        TypedGoRoute<FeedRoute>(
           path: '/',
           routes: <TypedGoRoute>[
             //! DO NOT PUT / in the beginning of the path as the path won't be found
-            TypedGoRoute<HomeDetailRoute>(path: 'details'),
+            TypedGoRoute<FeedDetailRoute>(path: 'details'),
           ],
         ),
       ],
     ),
-    TypedStatefulShellBranch<SettingsBranch>(
+    TypedStatefulShellBranch<ProfileBranch>(
       routes: <TypedGoRoute>[
-        TypedGoRoute<SettingsRoute>(
-          path: '/settings',
+        TypedGoRoute<ProfileRoute>(
+          path: '/profile',
           routes: <TypedGoRoute>[
-            TypedGoRoute<SettingsDetailsRoute>(path: 'details'),
+            TypedGoRoute<ProfileDetailsRoute>(path: 'details'),
           ],
         ),
       ],
@@ -69,61 +55,61 @@ class AppShellRoute extends StatefulShellRouteData {
   }
 }
 
-class HomeBranch extends StatefulShellBranchData {
-  const HomeBranch();
+class FeedBranch extends StatefulShellBranchData {
+  const FeedBranch();
 }
 
-class HomeRoute extends GoRouteData {
-  const HomeRoute();
+class FeedRoute extends GoRouteData {
+  const FeedRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const HomeScreen();
+  Widget build(BuildContext context, GoRouterState state) => const FeedScreen();
 }
 
-class HomeDetailRoute extends GoRouteData {
-  const HomeDetailRoute();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      DetailsScreen(title: 'Home Detail');
-}
-
-class SettingsBranch extends StatefulShellBranchData {
-  const SettingsBranch();
-}
-
-class SettingsRoute extends GoRouteData {
-  const SettingsRoute();
+class FeedDetailRoute extends GoRouteData {
+  const FeedDetailRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const SettingsScreen();
+      DetailsScreen(title: 'Feed Detail');
 }
 
-class SettingsDetailsRoute extends GoRouteData {
-  const SettingsDetailsRoute();
+class ProfileBranch extends StatefulShellBranchData {
+  const ProfileBranch();
+}
+
+class ProfileRoute extends GoRouteData {
+  const ProfileRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const DetailsScreen(title: 'Settings Details');
+      const ProfileScreen();
 }
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class ProfileDetailsRoute extends GoRouteData {
+  const ProfileDetailsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const DetailsScreen(title: 'Profile Details');
+}
+
+class FeedScreen extends StatelessWidget {
+  const FeedScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home')),
+      appBar: AppBar(title: const Text('Feed')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
               onPressed: () {
-                HomeDetailRoute().go(context);
+                FeedDetailRoute().go(context);
               },
-              child: const Text('Go to Home Details'),
+              child: const Text('Go to Feed Details'),
             ),
           ],
         ),
@@ -145,22 +131,22 @@ class DetailsScreen extends StatelessWidget {
   }
 }
 
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: const Text('Profile')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
               onPressed: () {
-                SettingsDetailsRoute().go(context);
+                ProfileDetailsRoute().go(context);
               },
-              child: const Text('Go to Settings Details'),
+              child: const Text('Go to Profile Details'),
             ),
           ],
         ),
@@ -180,11 +166,8 @@ class ScaffoldWithNavBar extends StatelessWidget {
       body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.feed), label: 'Feed'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
         currentIndex: navigationShell.currentIndex,
         onTap: (int index) {
