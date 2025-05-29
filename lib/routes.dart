@@ -13,15 +13,15 @@ part 'routes.g.dart';
 final goRouter = GoRouter(
   routes: $appRoutes,
   debugLogDiagnostics: true, // To see all the routes
-);
+);🎨
 
 @TypedStatefulShellRoute<AppShellRoute>(
-  branches: <TypedStatefulShellBranch>[
+  branches: [
     TypedStatefulShellBranch<FeedBranch>(
-      routes: <TypedGoRoute>[
+      routes: [
         TypedGoRoute<FeedRoute>(
           path: '/',
-          routes: <TypedGoRoute>[
+          routes: [
             //! DO NOT PUT / in the beginning of the path as the path won't be found
             TypedGoRoute<FeedDetailRoute>(path: 'details'),
           ],
@@ -29,12 +29,10 @@ final goRouter = GoRouter(
       ],
     ),
     TypedStatefulShellBranch<ProfileBranch>(
-      routes: <TypedGoRoute>[
+      routes: [
         TypedGoRoute<ProfileRoute>(
           path: '/profile',
-          routes: <TypedGoRoute>[
-            TypedGoRoute<ProfileDetailsRoute>(path: 'details'),
-          ],
+          routes: [TypedGoRoute<ProfileDetailsRoute>(path: 'details')],
         ),
       ],
     ),
